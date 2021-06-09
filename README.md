@@ -1,4 +1,4 @@
-ReactJS Mechama project (Web application for the Digital House integrator project)
+ReactJS Mechama Project
 
 
 Mechama ReactJS
