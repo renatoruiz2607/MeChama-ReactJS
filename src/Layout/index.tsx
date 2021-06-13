@@ -10,7 +10,6 @@ interface userLabelProps {
   accontCredits: string,
 }
 
-
 const Layout: React.FC = () => {
   const [userData, setUserData] = useState<userLabelProps>({name: "", accontCredits: ""});
   
@@ -23,10 +22,10 @@ const Layout: React.FC = () => {
         setUserData(res.data.userinfo)
       })
   },[])
-
+  
   return (
     <Grid>
-      <Header user={userData}></Header>
+      <Header user={userData} />
       <Content/>
       <Footer/>
     </Grid>
