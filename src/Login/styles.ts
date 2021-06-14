@@ -4,7 +4,6 @@ const GlobalStyle = createGlobalStyle`
     body {
         margin: 0;
         font-family: 'Roboto',sans-serif;
-        color: black;
         text-decoration: none;
     }
 `
@@ -24,6 +23,12 @@ const Body = styled.div<BodyProps>`
     background-size: cover !important;
     background-repeat: no-repeat;
     background: ${(props) => props.backgroundImage ? "url(" + props.backgroundImage + ") no-repeat" : null};
+`
+
+const RequiredField = styled.p`
+    margin: 0;
+    line-height: 0;
+    color: #d21f3c;
 `
 
 const InvalidAlert = styled.div<InvalidAlertProps>`
@@ -68,7 +73,7 @@ const Container = styled.div`
     }
 
     .logoBackground {
-        top: 5%;
+        top: 20px;
         position: absolute;
         padding: 15px;
         background-color: #1a1d2d;
@@ -81,14 +86,24 @@ const Container = styled.div`
                 left: 42%
             }
         }
-        @media (max-width:415px){
+        @media (max-width:460px){
+            .logoBackground{
+                left: 41%
+            }
+        }
+        @media (max-width:430px){
             .logoBackground{
                 left: 40%
             }
         }
+        @media (max-width:380px){
+            .logoBackground{
+                left: 38%
+            }
+        }
 
     .box {
-        top: 5%;
+        top: 20px;
         padding: 20px;
         width: 30%;
         background-color: white;
@@ -128,15 +143,14 @@ const Container = styled.div`
         }
         @media (max-width:600px){
             .box{
-                top: 27%;
+                top: 120px;
                 right: 0;
-                left: 52%;
+                left: 50%;
             }
         }
         @media (max-width:450px){
             .box{
                 width: 75%;
-                left: 52%;
             }
         }
         
@@ -275,4 +289,4 @@ const Container = styled.div`
     }
 `
 
-export { Body, Container, TransparentLayer, GlobalStyle, InvalidAlert }
+export { Body, Container, TransparentLayer, GlobalStyle, InvalidAlert, RequiredField }
