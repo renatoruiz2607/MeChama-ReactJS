@@ -4,7 +4,7 @@ import RestauranteProduct from '../RestauranteProduct';
 import { ProductsView } from './styles';
 
 interface PropR {
-  Search: string;
+  Categoria: string;
 }
 interface ProductProp {
   mansageError: false,
@@ -12,6 +12,7 @@ interface ProductProp {
     {
       id: number,
       name: string,
+      Categoty: string,
       description: string,
       value: number,
       img: string,
@@ -20,7 +21,7 @@ interface ProductProp {
   ]
 }
 
-const ProductSearch: React.FC = () => {
+const ProductCategory: React.FC = () => {
 
   const [ProductsData, setProductsData] = useState<ProductProp>();
   const Products: PropR = useParams();
@@ -34,7 +35,9 @@ const ProductSearch: React.FC = () => {
     <>
       <ProductsView>
         {ProductsData?.products ?ProductsData.products.filter((product) =>{
-          return  product.name.toUpperCase().includes(Products.Search.toString().toUpperCase());
+          console.log(Products.Categoria);
+          
+          return  product.Categoty.toUpperCase().includes(Products.Categoria.toUpperCase()) ;
         }).map((product,key)=>{
           return(
             <RestauranteProduct name={product.name}
@@ -50,4 +53,4 @@ const ProductSearch: React.FC = () => {
   );
 }
 
-export default ProductSearch;
+export default ProductCategory;

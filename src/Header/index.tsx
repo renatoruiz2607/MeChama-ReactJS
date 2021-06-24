@@ -4,11 +4,13 @@ import  { CartIcon } from '../Cart'
 import SearchBar from '../SearchBar'
 import { Container } from './styles'
 import UserProfileHeader from '../UserProfileHeader'
+import LogButton from '../LogButton'
 
 interface PropsHeader {
   user:{
     name: string;
     accontCredits: string;
+    imgPerfile: string;
   }
 }
 
@@ -25,6 +27,7 @@ const Header: React.FC<PropsHeader> = ({user}) => {
           <UserProfileHeader user={user}/>
         </div>
         <CartIcon/>
+        <LogButton/>
       </Container>
     </>
   )

@@ -8,13 +8,14 @@ import axios from 'axios'
 interface userLabelProps {
   name: string,
   accontCredits: string,
+  imgPerfile: string;
 }
 
 const Layout: React.FC = () => {
-  const [userData, setUserData] = useState<userLabelProps>({name: "", accontCredits: ""});
+  const [userData, setUserData] = useState<userLabelProps>({name: "", accontCredits: "", imgPerfile: ""});
   
   useEffect(() => {
-    axios.get('https://tn-15mechama-com.umbler.net/userConfig', {
+    axios.get('http://tn-15mechama-com.umbler.net/userConfig', {
       headers: {
         tokenUserJWT: localStorage.getItem('tokenUserJWT')
       }

@@ -25,10 +25,14 @@ const Login: React.FC = () => {
       if(!res.data.errorLogin){
         localStorage.setItem('tokenUserJWT',res.data)
         history.push("/")
+        window.location.reload()
       }else {
         history.push("/login")
         setErrorLogin(true)
-        document.querySelectorAll('input').forEach(input => (input.value = ""))
+        setData({
+          email: "",
+          password: "",
+        })
       }
     })
   }

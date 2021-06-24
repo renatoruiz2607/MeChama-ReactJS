@@ -1,21 +1,27 @@
 import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
-import { Container, HistorySell, Config, ItemSell, Photo } from './styles';
+import { Container, AddProduct, Config, Photo } from './styles';
 import ReactModal from 'react-modal';
-import api from '../services/api';
 import { withRouter } from 'react-router-dom'
 import RestauranteProduct from '../RestauranteProduct'
 import { ProductsView } from '../Restaurante/styles';
+import NewProduct from '../NewProduct';
+
 
 
 interface EmpDataProps {
-  "userinfo"?: {
+  "user"?: {
     "imgPerfile": String,
     "name": String,
     "CPF": String,
     "number": String,
     "userName": String,
     "email": String
+  },"empresa"?:{
+    "banner": String,
+    "logo": String,
+    "name": String,
   },
   "HistorySell"?: [
     {
@@ -37,17 +43,11 @@ interface EmpDataProps {
   "mansageError"?: Boolean,
   "mansageConfirm"?: Boolean
 }
-interface ItemHistoryProps {
-  "companyName": String,
-  "productName": String,
-  "productValue": String,
-  "productDate": String,
-  "productQuantity": Number
-}
 
 
 
 const ConfigEmp: React.FC = () => {
+
 
   const [update, setUpdate] = useState(null);
 
@@ -55,20 +55,53 @@ const ConfigEmp: React.FC = () => {
     npassword: "",
     cpassword: "",
     password: "",
-    ProductName : "",
-    ProductValue : "",
-    ProductImg : "",
+    ProductName: "",
+    ProductValue: "",
+    ProductImg: "",
+  })
+  const [dataUpdate, setDataUpdate] = useState({
+    userName: "",
   })
 
 
+  function handleUpdate(e: any) {
+    const newData: any = { ...dataUpdate }
+    newData[e.target.id] = e.target.value
+    setDataUpdate(newData)
+    console.log(dataUpdate);
+    
+  }
   function handle(e: any) {
     const newData: any = { ...data }
     newData[e.target.id] = e.target.value
     setData(newData)
   }
 
+  async function saveNewName(){
+    await axios.post('http://tn-15mechama-com.umbler.net/userConfig/infosedit', {
+      userName : dataUpdate.userName
+    },
+      {
+        headers: {
+          tokenUserJWT: DataLocalStorage
+        }
+      }).then(res => {
+
+        setUpdate(res.data?.update.value);
+        
+        window.location.reload();
+
+      }).catch(err => {
+        console.log(err);
+        alert("Não foi possivel alterar");
+
+      })
+
+
+  }
+
   async function submitPass() {
-    await axios.post('https://tn-15mechama-com.umbler.net/userConfig/passEdit', {
+    await axios.post('http://tn-15mechama-com.umbler.net/userConfig/passEdit', {
       npassword: data.npassword,
       cpassword: data.cpassword,
       password: data.password
@@ -79,11 +112,10 @@ const ConfigEmp: React.FC = () => {
         }
       }).then(res => {
 
-        setUpdate(res.data?.update.value);
-
+        alert("Alterado com sucesso");
       }).catch(err => {
         console.log(err);
-
+        alert("Não foi possivel alterar");
       })
 
 
@@ -91,67 +123,63 @@ const ConfigEmp: React.FC = () => {
 
   const customStyles = {
     content: {
-      top: '50%',
+      top: '56%',
       left: '50%',
       right: 'auto',
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      background: '#1a1d2d',
+      background: 'var(--white)',
       width: '95%',
       height: '85%',
 
     }, button: {
       width: '50%',
       background: 'none',
-      color: '#fff',
+      color: 'var(--text)',
       margin: '15px 0px 15px 0',
-      fontSize: '35px',
+      fontSize: '20px',
       cursor: 'pointer',
-      border: '2px solid #fff',
-      borderRadius: '25px'
+      border: '2px solid var(--text)',
+      borderRadius: '25px',
     },
     div: {
-      color: '#fff',
+      color: 'var(--text)',
       margin: '15px 25px',
       textAlign: 'center' as const,
 
     }, close: {
       background: 'none',
-      color: '#fff',
-      fontSize: '24px'
+      color: 'var(--text)',
+      fontSize: '15px'
     },
     label: {
-
-      color: '#fff',
+      color: 'var(--text)',
       margin: '15px 0px 15px 0',
-      fontSize: '35px',
+      fontSize: '20px',
       cursor: 'pointer',
-
-
     },
     input: {
       background: 'none',
-      color: '#fff',
+      color: 'var(--text)',
       width: '100%',
       height: '25px',
-      fontSize: '24px',
-      borderBottom: '2px solid #fff',
+      fontSize: '15px',
+      borderBottom: '2px solid var(--text)',
     }
-
   };
 
-  const [IsOpenName, setIsOpenName] = useState(false);
+  // const [IsOpenName, setIsOpenName] = useState(false);
   const [IsOpenPass, setIsOpenPass] = useState(false);
+  
+  // function handleCloseModalName() {
 
-  function handleCloseModalName() {
+  //   setIsOpenName(false);
 
-    setIsOpenName(false);
-
-  }
-  function handleOpenModalName() {
-    setIsOpenName(true);
-  }
+  // }
+  // function handleOpenModalName() {
+  //   setIsOpenName(true);
+  // }
   function handleCloseModalPass() {
 
     setIsOpenPass(false);
@@ -161,7 +189,6 @@ const ConfigEmp: React.FC = () => {
     setIsOpenPass(true);
   }
 
-
   const [EmpData, setEmpData] = useState<EmpDataProps>({});
 
 
@@ -169,18 +196,16 @@ const ConfigEmp: React.FC = () => {
 
   useEffect(() => {
 
+
     async function callAPI() {
 
-      await axios.get('https://tn-15mechama-com.umbler.net/company/', {
+      await axios.get('http://tn-15mechama-com.umbler.net/company', {
         headers: {
           tokenUserJWT: DataLocalStorage
         }
       }).then(response => setEmpData(response.data));
-
     }
     callAPI();
-    console.log(EmpData);
-    
 
 
   }, [DataLocalStorage]);
@@ -194,28 +219,30 @@ const ConfigEmp: React.FC = () => {
 
         <Config>
           <div className="Card">
-            <Photo src={"https://tn-15mechama-com.umbler.net/images/" + EmpData.userinfo?.imgPerfile} alt="" />
-            <h1>{EmpData.userinfo?.name}</h1>
-            <h1>{EmpData.userinfo?.email}</h1>
+            <div className="card-align">
+              <Photo src={"http://tn-15mechama-com.umbler.net/images/" + EmpData.empresa?.logo} alt="" />
+              <h1>{EmpData.user?.name}</h1>
+            </div>
+            <h1 className="email-align">{EmpData.user?.email}</h1>
           </div>
 
           <div className="Card">
             <div className="Card">
-              <label htmlFor="Photo"> Alterar Foto </label>
+              <label htmlFor="Photo"> Alterar foto </label>
               <input type="file" name="Photo" id="Photo" accept="image/*" />
             </div>
+            {/* <div className="Card">
+              <label htmlFor="userName" onClick={handleOpenModalName}> Alterar título</label>
+            </div> */}
             <div className="Card">
-              <label htmlFor="userName" onClick={handleOpenModalName}> Alterar Titulo</label>
-            </div>
-            <div className="Card">
-              <label htmlFor="Password" onClick={handleOpenModalPass}> Alterar Senha </label>
+              <label htmlFor="Password" onClick={handleOpenModalPass}> Alterar senha </label>
             </div>
 
           </div>
 
           <ProductsView>
             {EmpData.products?.map(product => {
-              return <RestauranteProduct id={product.id} name={product.name} description={product.description} value={product.value} img={'https://tn-15mechama-com.umbler.net/images/'+ product.img}/>
+              return <RestauranteProduct id={product.id} name={product.name} description={product.description} value={product.value} img={product.img} />
 
             })}
 
@@ -223,20 +250,9 @@ const ConfigEmp: React.FC = () => {
 
 
         </Config>
-        <HistorySell>{EmpData.HistorySell?.map((item: ItemHistoryProps, i: any) => {
-
-          return (<ItemSell key={i}>
-            <h1 className="title">{item.companyName}</h1>
-            <h2 className="nameProduct">{item.productName} {item.productQuantity}x</h2>
-            <h3 className="value">R$ {item.productValue}</h3>
-            <p className="Date">{item.productDate}</p>
-
-
-
-
-          </ItemSell>)
-
-        })}</HistorySell>
+        <AddProduct>
+         <NewProduct></NewProduct>
+        </AddProduct>
 
       </Container>
 
@@ -249,19 +265,18 @@ const ConfigEmp: React.FC = () => {
         <div>
           <button onClick={handleCloseModalPass} style={customStyles.close}>X</button>
           <div style={customStyles.div}>
-            <label htmlFor="UserPass" style={customStyles.label}><i className="far fa-user" />Senha atual</label>
+            <label htmlFor="password" style={customStyles.label}><i className="far fa-user" />Senha atual</label>
             <input type="password" onChange={handle} value={data.password} name="password" id="password" style={customStyles.input} />
-
           </div>
           <br />
           <div style={customStyles.div}>
-            <label htmlFor="UserNewPass" style={customStyles.label}><i className="far fa-user" style={customStyles.label} />Nova Senha</label>
+            <label htmlFor="npassword" style={customStyles.label}><i className="far fa-user" style={customStyles.label} />Nova senha</label>
             <input onChange={handle} value={data.npassword} type="password" name="npassword" id="npassword" style={customStyles.input} />
 
           </div>
           <br />
           <div style={customStyles.div}>
-            <label htmlFor="UserNewPass" style={customStyles.label}><i className="far fa-user" style={customStyles.label} />Confirmar Nova Senha</label>
+            <label htmlFor="cpassword" style={customStyles.label}><i className="far fa-user" style={customStyles.label} />Confirmar nova senha</label>
             <input onChange={handle} value={data.cpassword} type="password" name="cpassword" id="cpassword" style={customStyles.input} />
 
             <button onClick={submitPass} type="button" style={customStyles.button} >Salvar</button>
@@ -274,20 +289,20 @@ const ConfigEmp: React.FC = () => {
 
       </ReactModal>
 
-      <ReactModal
+      {/* <ReactModal
         onRequestClose={handleCloseModalName}
         isOpen={IsOpenName}
         style={customStyles}
       >
         <button onClick={handleCloseModalName} style={customStyles.close}>X</button>
         <div style={customStyles.div}>
-          <label htmlFor="UserName" style={customStyles.close}><i className="far fa-user" />Digite o Nome da empreasa</label>
-          <input type="text" style={customStyles.input} name="UserName" id="UserName" />
-          <button type="submit" style={customStyles.button}>Salvar</button>
+          <label htmlFor="UserName" style={customStyles.close}><i className="far fa-user" />Digite o nome da empreasa</label>
+          <input type="text" style={customStyles.input} id="userName" onChange={handleUpdate} name="userName" />
+          <button type="submit" onClick={saveNewName}  style={customStyles.button}>Salvar</button>
         </div>
 
 
-      </ReactModal>
+      </ReactModal> */}
     </>
 
   );

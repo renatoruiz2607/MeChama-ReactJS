@@ -9,6 +9,7 @@ import Cart from '../Cart';
 import ProtectedRoute from '../services/protectedRoute'
 import ConfigEmp from '../ConfigEmp';
 import axios from 'axios'
+import ProductCategory from '../ProductCategory';
 
 const Content = () => {
 
@@ -17,7 +18,7 @@ const Content = () => {
 
   useEffect(() => {
     async function callAPI() {
-      await axios.get('https://tn-15mechama-com.umbler.net/userConfig', {
+      await axios.get('http://tn-15mechama-com.umbler.net/userConfig', {
         headers: {
           tokenUserJWT: localStorage.getItem('tokenUserJWT')
         }
@@ -44,9 +45,12 @@ const Content = () => {
       <Route exact path="/Search/:Search">
        <ProductSearch/>
       </Route>
+      <Route exact path="/categoria/:Categoria">
+      <ProductCategory></ProductCategory>
+      </Route>
 
       <ProtectedRoute path="/User/me" component={ConfigUser} isUser={isUser} isCompany={isCompany}/>
-      <ProtectedRoute path="/Emp/me" component={ConfigEmp} isUser={isUser} isCompany={isCompany}/>
+      <ProtectedRoute path="/Emp/me/:data" component={ConfigEmp} isUser={isUser} isCompany={isCompany}/>
 
       <ProtectedRoute path="/Compras" component={Cart} isUser={isUser} isCompany={isCompany}/>
       

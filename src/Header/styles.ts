@@ -2,12 +2,17 @@ import styled from 'styled-components'
 
 export const Container = styled.header`
   grid-area: H;
-  background-color: var(--BGColor);
+  background-color: var(--white);
   display: flex;
   justify-content: space-between;
   align-items:center;
   padding: 10px;
-  
+  height: 62px;
+  width: 100%;
+  position: fixed;
+  border-bottom: 1px solid var(--pink);
+  z-index: 1;
+
   .oneDiv{
     display: flex;
   }
@@ -30,43 +35,13 @@ export const Container = styled.header`
       height: 30px!important;
     }
   }
+  @media (max-width: 500px) {
+    img {
+      width: 25px!important;
+      height: 25px!important;
+    }
+  }
+  @media (max-width:400px) {
+    padding: 2;
+  }
 `
-// export const UserInfos = styled.a`
-//   cursor: pointer;
-//   display: flex;
-//   min-width: 180px;
-//   text-align: center;
-//   align-items: center;
-//   text-decoration: none;
-  
-//   .UserImg {
-//     border-radius: 50%;
-//     background-color: var(--BGColor);
-//     padding:2px;
-//     border:1px solid var(--green);
-//     width: 40px;
-//     object-fit: cover;
-//   }
-
-//   h1 {
-//     margin-right: 5%;
-//     margin-left: 5%;
-//     font-size: 14px;
-//     color: var(--white);
-//   }
-    
-//   h2 {
-//     font-size:12px;
-//     color: var(--gray);
-//   }
-
-//   @media (max-width: 500px) {
-//     min-width: 0;
-//     h1, h2 {
-//       display: none;
-//       width: 0;
-//     }
-//   }
-// `
-
-
